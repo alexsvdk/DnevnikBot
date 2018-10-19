@@ -15,6 +15,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'khttp:khttp:0.1.0'
+    implementation 'org.telegram:telegrambots:4.1'
 }
 
 compileKotlin {
