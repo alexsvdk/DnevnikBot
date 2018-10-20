@@ -2,15 +2,17 @@ package bot
 
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
-import objects.Massage
+import objects.Message
 
 abstract class BotModel {
 
-    private val subsribers = mutableListOf<ObservableEmitter<Massage>>()
-    val msgObservable: Observable<Massage> = Observable.create { subsribers.add(it) }
+    private val subsribers = mutableListOf<ObservableEmitter<Message>>()
+    val msgObservable: Observable<Message> = Observable.create { subsribers.add(it) }
 
-    abstract fun sendMsg(msg:Massage)
+    abstract fun sendMsg(msg:Message)
+    abstract val TAG:String
 
-    fun onMsgRecived(msg:Massage){subsribers.forEach { it.onNext(msg) }}
+    fun onMsgRecived(msg:Message){subsribers.forEach { it.onNext(msg) }}
+
 
 }
