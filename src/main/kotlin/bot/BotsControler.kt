@@ -5,7 +5,7 @@ import main.App
 import objects.BotUser
 import objects.Message
 
-class BotsControler(app: App) {
+class BotsControler(val app: App) {
 
     val bots = listOf<BotModel>(VKBot())
     val states = mutableMapOf<BotUser,Int>()
@@ -16,13 +16,36 @@ class BotsControler(app: App) {
 
         bots.forEach { it.msgObservable.subscribe {update ->
             if (!states.contains(update.botUser)) states.put(update.botUser,0)
+            println(states)
             bots.find { it.TAG==update.botUser.source }?.also { bot->
 
                 when (states[update.botUser]){
                     -1 -> {}
-                    0-> {}
-                    1 -> {}
-                    2 -> {}
+                    0-> {
+                        bot.sendMsg(Message(MessageGenerator.hi,update.botUser))
+                        bot.sendMsg(Message(MessageGenerator.login,update.botUser))
+                        states[update.botUser]=1
+                    }
+                    1 -> {
+                        if (update.msg.toLowerCase()=="отмена"){
+                            bot.sendMsg(Message("Принято!",update.botUser))
+                            states[update.botUser]=-1
+                        }else{
+                            bot.sendMsg(Message(MessageGenerator.password,update.botUser))
+                            logins[update.botUser]=update.msg
+                            states[update.botUser]=2
+                        }
+                    }
+                    2 -> {
+                        if (update.msg.toLowerCase()=="отмена"){
+                            bot.sendMsg(Message("Принято!",update.botUser))
+                            states[update.botUser]=-1
+                        }else{
+                            passwords[update.botUser]=update.msg
+                            states[update.botUser]=3
+                            bot.sendMsg(Message(app.login(logins[update.botUser]!!,passwords[update.botUser]!!).toString(),update.botUser))
+                        }
+                    }
                     else -> {}
                 }
             } } }
