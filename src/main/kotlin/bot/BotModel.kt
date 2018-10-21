@@ -2,6 +2,7 @@ package bot
 
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
+import objects.BotUser
 import objects.Message
 
 abstract class BotModel {
@@ -13,6 +14,9 @@ abstract class BotModel {
     abstract val TAG:String
 
     fun onMsgRecived(msg:Message){subsribers.forEach { it.onNext(msg) }}
+    fun sendMsg(msg: String, botUser: BotUser) {
+        sendMsg(Message(msg,botUser))
+    }
 
 
 }

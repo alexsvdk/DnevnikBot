@@ -1,5 +1,8 @@
 package util
 
 object Threads {
-    //fun doAsync(val )
+
+    fun doAsync(exec: () -> Unit){
+        Thread{ exec() }.start()
+    }
 }

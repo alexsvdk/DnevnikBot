@@ -20,7 +20,10 @@ class BotsControler(val app: App) {
             bots.find { it.TAG==update.botUser.source }?.also { bot->
 
                 when (states[update.botUser]){
-                    -1 -> {}
+                    -1 -> {
+                        bot.sendMsg(Message(MessageGenerator.login,update.botUser))
+                        states[update.botUser]=1
+                    }
                     0-> {
                         bot.sendMsg(Message(MessageGenerator.hi,update.botUser))
                         bot.sendMsg(Message(MessageGenerator.login,update.botUser))
@@ -42,8 +45,13 @@ class BotsControler(val app: App) {
                             states[update.botUser]=-1
                         }else{
                             passwords[update.botUser]=update.msg
-                            states[update.botUser]=3
-                            bot.sendMsg(Message(app.login(logins[update.botUser]!!,passwords[update.botUser]!!).toString(),update.botUser))
+                            if (app.login(update.botUser,logins[update.botUser]!!,passwords[update.botUser]!!)){
+                                bot.sendMsg(MessageGenerator.ready,update.botUser)
+                                states[update.botUser]=3
+                            }else{
+                                bot.sendMsg(MessageGenerator.wrong,update.botUser)
+                                states[update.botUser]=-1
+                            }
                         }
                     }
                     else -> {}

@@ -1,5 +1,6 @@
 package objects
 
+import api.Requester
 import com.google.gson.annotations.SerializedName
 
 data class User(
@@ -10,4 +11,6 @@ data class User(
         @SerializedName("user") val user: Long,
         @SerializedName("refreshToken") val refreshToken: String,
         @SerializedName("user_str") val userStr: String
-)
+){
+    val userContent = Requester.userContent(accessToken)
+}
