@@ -6,7 +6,6 @@ import cache.Cache
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import objects.BotUser
-import objects.BotUserData
 import objects.Update
 
 class App{
@@ -30,11 +29,11 @@ class App{
                     marks.marks.forEach { mark->
                         if (!marksData[user.user]!!.contains(mark)){
                             marksData[user.user]!!.add(mark)
-                            //subscribers.forEach { sbs -> botusers.filter { it.users.contains(user.user) }.forEach { sbs.onNext(Update())} }
+                            subscribers.forEach { sbs -> sbs.onNext(Update(botusers.filter { it.accounts.contains(user.user.toString()) },mark)) }
                         }
                     }
 
-
+                    Thread.sleep(60000)
                 }
                 Thread.sleep(60000)
             }
@@ -46,7 +45,9 @@ class App{
         val user = Requester.login(username,password)
         if (user.accessToken!="null"){
             Cache.saveUser(user)
-            //Cache.saveBotUserData(BotUserData(5,))
+            botUser.accounts.add(user.user.toString())
+            Cache.saveBotUser(botUser)
+
             return true
         }
         return false

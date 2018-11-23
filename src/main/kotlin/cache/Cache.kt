@@ -2,7 +2,6 @@ package cache
 
 import com.google.gson.Gson
 import objects.BotUser
-import objects.BotUserData
 import objects.Mark
 import objects.User
 import java.io.File
@@ -22,8 +21,8 @@ object Cache {
     fun getUser(username:String):User? = getUser(File(patch+File.separator+"users"+File.separator+username+".json"))
     fun getUser(file: File):User? = if (file.exists()) gson.fromJson(file.reader(),User::class.java) else null
 
-    fun getBotUserData(botUser: BotUser):BotUserData? = getBotUserData(File(patch+File.separator+"botusers"+File.separator+botUser+".json"))
-    fun getBotUserData(file: File):BotUserData? = if (file.exists()) gson.fromJson(file.reader(),BotUserData::class.java) else null
+    fun getBotUser(botUser: BotUser):BotUser? = getBotUser(File(patch+File.separator+"botusers"+File.separator+botUser+".json"))
+    fun getBotUser(file: File):BotUser? = if (file.exists()) gson.fromJson(file.reader(),BotUser::class.java) else null
 
     fun getRecentMarks(user: User):MutableList<Mark>? = getRecentMarks(File(patch+File.separator+"marks"+File.separator+user.user+".json"))
     fun getRecentMarks(file: File):MutableList<Mark>? = if (file.exists()) gson.fromJson(file.reader(),(object :LinkedList<Mark>(){})::class.java) else null
@@ -33,9 +32,9 @@ object Cache {
         file.writeText(gson.toJson(user))
     }
 
-    fun saveBotUserData(botUserData: BotUserData,botUser: BotUser){
+    fun saveBotUser(botUser: BotUser){
         val file = File(patch+File.separator+"botusers"+File.separator+botUser+".json")
-        file.writeText(gson.toJson(botUserData))
+        file.writeText(gson.toJson(botUser))
     }
 
     fun saveRecentMarks(marks: List<Mark>,user: User){
@@ -44,6 +43,6 @@ object Cache {
     }
 
     fun getUsers():MutableList<User> = File(patch+File.separator+"users").listFiles().map { getUser(it)!! }.toMutableList()
-    fun getBotUsrDatas(): MutableList<BotUserData> = File(patch+File.separator+"botusers").listFiles().map { getBotUserData(it)!! }.toMutableList()
+    fun getBotUsrDatas(): MutableList<BotUser> = File(patch+File.separator+"botusers").listFiles().map { getBotUser(it)!! }.toMutableList()
     fun getRecentMarksMap(): MutableMap<Long,MutableList<Mark>> = File(patch+File.separator+"marks").listFiles().map { Pair(it.nameWithoutExtension.toLong(),getRecentMarks(it)!!) }.toMap().toMutableMap()
 }
