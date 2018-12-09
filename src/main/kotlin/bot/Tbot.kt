@@ -1,5 +1,6 @@
 package bot
 
+import main.Config
 import org.telegram.telegrambots.ApiContextInitializer
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.TelegramBotsApi
@@ -17,17 +18,17 @@ class Tbot :BotModel() {
     override val TAG = "TG"
 
     val bot = object :TelegramLongPollingBot(){
+
         override fun getBotToken(): String = Config.telegramToken
         override fun getBotUsername(): String = Config.botName
 
         override fun onUpdateReceived(update: Update?) {
-            if (update!=null&&update.hasMessage()&&update.message.hasText()&&!update.message.groupchatCreated)
+            if (update!=null&&update.hasMessage()&&update.message.hasText())
                 onMsgRecived(objects.Message(update.message.chatId!!,update.message.text,TAG))
         }
     }
 
     init {
-        ApiContextInitializer.init()
         TelegramBotsApi().registerBot(bot)
     }
 

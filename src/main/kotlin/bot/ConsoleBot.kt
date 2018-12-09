@@ -9,12 +9,12 @@ class ConsoleBot: BotModel() {
 
     init {
         val scanner = Scanner(System.`in`)
-        while (scanner.hasNextLine())
+        while (true)
             onMsgRecived(Message(0,scanner.nextLine(),TAG))
     }
 
     override fun sendMsg(msg: Message) {
-        println(msg)
+        println(msg.msg)
     }
 
 }

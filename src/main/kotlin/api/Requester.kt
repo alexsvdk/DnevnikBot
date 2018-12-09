@@ -3,6 +3,7 @@ package api
 import com.google.gson.Gson
 import khttp.get
 import khttp.post
+import main.Config
 import objects.Marks
 import objects.User
 import objects.UserContent
@@ -32,7 +33,7 @@ object Requester {
 
 fun Map<String,String>.toJson():JSONObject{
     val json = JSONObject()
-    json.put("client_id",Config.client_id)
+    json.put("client_id", Config.client_id)
     json.put("client_secret",Config.client_secret)
     forEach { k, v -> json.put(k,v) }
     return json

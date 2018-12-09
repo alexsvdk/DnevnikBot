@@ -12,5 +12,9 @@ data class User(
         @SerializedName("refreshToken") val refreshToken: String,
         @SerializedName("user_str") val userStr: String
 ){
-    val userContent = Requester.userContent(accessToken)
+    var userContent: UserContent? = null
+
+    override fun equals(other: Any?): Boolean {
+        return (other is User && other.user==user)
+    }
 }

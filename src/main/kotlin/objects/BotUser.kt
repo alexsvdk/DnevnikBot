@@ -8,4 +8,8 @@ data class BotUser (
     override fun toString(): String {
         return "${source}_$id"
     }
+
+    override fun equals(other: Any?): Boolean {
+        return (other is BotUser && other.id==id)
+    }
 }

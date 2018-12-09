@@ -3,6 +3,7 @@ package bot
 import com.petersamokhin.bots.sdk.callbacks.callbackapi.ExecuteCallback
 import com.petersamokhin.bots.sdk.clients.Group
 import com.petersamokhin.bots.sdk.objects.Message
+import main.Config
 
 class VKBot:BotModel() {
     override val TAG = "VK"
