@@ -9,8 +9,9 @@ class ConsoleBot: BotModel() {
 
     init {
         val scanner = Scanner(System.`in`)
-        while (true)
-            onMsgRecived(Message(0,scanner.nextLine(),TAG))
+        while (true){
+            Thread.sleep(5000)
+            onMsgRecived(Message(0,scanner.nextLine(),TAG))}
     }
 
     override fun sendMsg(msg: Message) {

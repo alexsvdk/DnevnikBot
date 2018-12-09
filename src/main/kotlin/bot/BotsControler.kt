@@ -6,7 +6,7 @@ import objects.Message
 
 class BotsControler(val app: App) {
 
-    val bots = listOf(ConsoleBot())
+    val bots = listOf(VKBot(),Tbot())
     val states = mutableMapOf<String,Int>()
     val logins = mutableMapOf<BotUser,String>()
     val passwords = mutableMapOf<BotUser,String>()
@@ -59,7 +59,6 @@ class BotsControler(val app: App) {
 
         app.updates.subscribe {
             it.botUsers.forEach {botuser->
-                println(MessageGenerator.newMarkNotification(it.newMark,it.lessons, it.subjects))
                 bots.find { it.TAG==botuser.source }?.sendMsg( Message(MessageGenerator.newMarkNotification(it.newMark,it.lessons, it.subjects),botuser) )
             }
         }
