@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="21d56f5b-06dd-4ff0-9cba-a64482ede2be" name="school" url="http://35.231.45.17">
-        <fileTransfer host="35.231.45.17" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/home/a1exs" accessType="SFTP" keyPair="true">
+      <webServer id="21d56f5b-06dd-4ff0-9cba-a64482ede2be" name="freeserver" url="http://35.247.112.240">
+        <fileTransfer host="35.247.112.240" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/home/a1exs" accessType="SFTP" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" muteSftpMessages="true" shareSSLContext="true" />
           </advancedOptions>

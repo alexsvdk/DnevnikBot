@@ -3,6 +3,9 @@ package bot
 import main.App
 import objects.BotUser
 import objects.Message
+import objects.updates.DaylyUpdate
+import objects.updates.MarkUpdate
+import util.MessageGenerator
 
 class BotsControler(val app: App) {
 
@@ -10,6 +13,10 @@ class BotsControler(val app: App) {
     val states = mutableMapOf<String,Int>()
     val logins = mutableMapOf<BotUser,String>()
     val passwords = mutableMapOf<BotUser,String>()
+
+    fun sendMessage(message: Message){
+        bots.find { it.TAG==message.botUser.source }?.sendMsg(message)
+    }
 
     init {
 
@@ -57,10 +64,24 @@ class BotsControler(val app: App) {
             }
         } }
 
-        app.updates.subscribe {
-            it.botUsers.forEach {botuser->
-                bots.find { it.TAG==botuser.source }?.sendMsg( Message(MessageGenerator.newMarkNotification(it.newMark,it.lessons, it.subjects),botuser) )
+        app.updates.subscribe { update ->
+            when{
+                (update is MarkUpdate) ->
+                    update.botUsers.forEach { sendMessage(Message(MessageGenerator.newMark(update),it)) }
+
+
+                (update is DaylyUpdate) ->
+                    update.botUsers.forEach { sendMessage(Message(MessageGenerator.daylyNotification(update),it)) }
+
+
+                else -> {
+
+                }
             }
+
         }
     }
+
+
+
 }
