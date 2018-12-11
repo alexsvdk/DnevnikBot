@@ -18,8 +18,8 @@ object Requester {
          return gson.fromJson(post(api+"authorizations/bycredentials", json = mapOf("username" to username,"password" to password,"scope" to "Schools,Relatives,EduGroups,Lessons,Marks,EduWorks,Avatar").toJson()).text,User::class.java)
     }
 
-    fun refresh(refreshToken:String):String{
-         return post(api+"authorizations",json = mapOf("grant_type" to "RefreshToken","refreshToken" to refreshToken,"scope" to "Schools,Relatives,EduGroups,Lessons,Marks,EduWorks,Avatar").toJson()).text
+    fun refresh(refreshToken:String):User{
+         return gson.fromJson(post(api+"authorizations",json = mapOf("grant_type" to "RefreshToken","refreshToken" to refreshToken,"scope" to "Schools,Relatives,EduGroups,Lessons,Marks,EduWorks,Avatar").toJson()).text,User::class.java)
     }
 
     fun userContent(accessToken:String):UserContent{

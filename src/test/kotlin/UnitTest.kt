@@ -1,5 +1,5 @@
+import api.Requester
 
 fun main(args:Array<String>){
-   val date = "2018-10-19T09:41:54.233"
-    print(date.substring(8,10))
+    print(Requester.refresh("3ntwb0fgFSK680lKkRgsP0ThG2sItgH3"))
 }

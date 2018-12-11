@@ -12,6 +12,7 @@ import objects.updates.Update
 import java.text.SimpleDateFormat
 import java.util.*
 import util.Threads.doContinuoslyAsync
+import java.lang.NullPointerException
 
 class App{
 
@@ -22,7 +23,7 @@ class App{
     private val botusers = Cache.getBotUsrDatas()
     private val marksData = Cache.getRecentMarksMap()
 
-    private val dateFormat = SimpleDateFormat("dd")
+    private val dateFormat = SimpleDateFormat("MMdd")
     private var day = dateFormat.format(Date()).toInt()
 
     init {
@@ -32,7 +33,7 @@ class App{
                 try {
                     if (user.userContent == null) user.userContent = Requester.userContent(user.accessToken)
                     val marks = Requester.userMarks(user.accessToken, user.userContent!!.personId.toString(), user.userContent!!.groupIds[0].toString())
-                    marks.marks.filter { it.date.substring(8,10).toInt()==day }.forEach { mark->
+                    marks.marks.filter { it.date.substring(5,10).replace("-","").toInt()==day }.forEach { mark->
                         if (marksData[user.user]==null) marksData[user.user] = mutableListOf()
                         if (!marksData[user.user]!!.contains(mark)){
                             marksData[user.user]!!.add(mark)
@@ -42,7 +43,17 @@ class App{
                     }
                 }
                 catch (e:Exception){
-                    e.printStackTrace()
+                    if (e is NullPointerException){
+                        try {
+                            val newUser = Requester.refresh(user.refreshToken)
+                            users.remove(user)
+                            users.add(newUser)
+                            Cache.saveUser(newUser)
+                        }catch (e: Exception){
+                            users.remove(user)
+                            e.printStackTrace()
+                        }
+                    }
                 }
                 Thread.sleep(Config.sleeptime)
             }
@@ -50,9 +61,9 @@ class App{
         }
 
         doContinuoslyAsync {
-            Thread.sleep(Config.sleeptime*60)
+            Thread.sleep(Config.sleeptime*30)
             day = dateFormat.format(Date()).toInt()
-            marksData.map { Pair(it.key,it.value.filter { it.date.substring(8,10).toInt()!=day }) }
+            marksData.map { Pair(it.key,it.value.filter {it.date.substring(5,10).replace("-","").toInt()!=day }) }.filter { it.second.isNotEmpty() }
                     .forEach{
                         val user = users.find { user -> user.user==it.first }!!
                         subscribers.forEach { sbs -> sbs.onNext(DaylyUpdate(botusers.filter { it.accounts.contains(user.user.toString()) },it.second)) }
