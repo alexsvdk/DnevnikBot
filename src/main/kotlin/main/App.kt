@@ -9,6 +9,7 @@ import objects.BotUser
 import objects.updates.DaylyUpdate
 import objects.updates.MarkUpdate
 import objects.updates.Update
+import util.Threads.doAsync
 import java.text.SimpleDateFormat
 import java.util.*
 import util.Threads.doContinuoslyAsync
@@ -70,9 +71,6 @@ class App{
                         it.second.forEach {mark -> marksData[it.first]!!.remove(mark) }
                         Cache.saveRecentMarks(marksData[it.first]!!,user)
                     }
-
-
-
         }
 
 
@@ -99,5 +97,13 @@ class App{
         }
         return false
 
+    }
+
+    fun dz(botUser: BotUser){
+        doAsync {
+            botusers.find { it.toString()==botUser.toString() }?.also {
+                //TODO schadulete update sending
+            }
+        }
     }
 }

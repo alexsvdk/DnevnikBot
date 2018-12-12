@@ -5,6 +5,7 @@ import objects.BotUser
 import objects.Message
 import objects.updates.DaylyUpdate
 import objects.updates.MarkUpdate
+import objects.updates.SchadulesUpdate
 import util.MessageGenerator
 
 class BotsControler(val app: App) {
@@ -13,6 +14,8 @@ class BotsControler(val app: App) {
     val states = mutableMapOf<String,Int>()
     val logins = mutableMapOf<BotUser,String>()
     val passwords = mutableMapOf<BotUser,String>()
+
+    //TODO botuseruser status saver
 
     fun sendMessage(message: Message){
         bots.find { it.TAG==message.botUser.source }?.sendMsg(message)
@@ -59,6 +62,9 @@ class BotsControler(val app: App) {
                             }
                         }
                     }
+
+                    //TODO schedule request
+
                     else -> {}
                 }
             }
@@ -72,6 +78,10 @@ class BotsControler(val app: App) {
 
                 (update is DaylyUpdate) ->
                     update.botUsers.forEach { sendMessage(Message(MessageGenerator.daylyNotification(update),it)) }
+
+                (update is SchadulesUpdate) -> {
+                    //TODO schadulete update ui
+                }
 
 
                 else -> {

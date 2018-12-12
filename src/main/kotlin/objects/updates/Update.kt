@@ -8,4 +8,3 @@ import objects.Subject
 abstract class Update {
     abstract val botUsers: List<BotUser>
 }
-

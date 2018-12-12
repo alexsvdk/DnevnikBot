@@ -5,6 +5,7 @@ import khttp.get
 import khttp.post
 import main.Config
 import objects.Marks
+import objects.Schedulse
 import objects.User
 import objects.UserContent
 import org.json.JSONObject
@@ -28,6 +29,10 @@ object Requester {
 
     fun userMarks(accessToken:String,personId:String,groupId:String):Marks{
          return gson.fromJson(get(api+"persons/$personId/group/$groupId/recentmarks", params = mapOf("access_token" to accessToken, "limit" to "4")).text,Marks::class.java)
+    }
+
+    fun userSchedules(accessToken:String, personId:String, groupId:String,startDate:String,endDate: String = startDate):Schedulse{
+        return gson.fromJson(get(api+"persons/$personId/groups/$groupId/schedules", params = mapOf("access_token" to accessToken, "startDate" to "${startDate}T00:00:00", "endDate" to "${endDate}T23:59:59")).text,Schedulse::class.java)
     }
 }
 
